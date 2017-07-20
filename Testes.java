@@ -32,6 +32,23 @@ public class Testes {
 		System.out.println(estado.getTransicoes().toString());
 	}
 	
+	public static void addParDependente(Estado x1, Estado x2, Par dependente) {
+		//	Verifica se esse par existe (par formado pelo estado x1 e x2)
+		//	Se existir adiciona o Par dependente a estrutura paresDependentes
+		for (int i = 0; i < paresD.size(); i++) {
+			//	Verifica existência do par formado por x1 e x2 -> Par(x1,x2) OU Par(x2,x1)
+			if ((paresD.get(i).par1.equals(x1) && paresD.get(i).par2.equals(x2)) || 
+				(paresD.get(i).par1.equals(x2) && paresD.get(i).par2.equals(x1))) {
+				System.out.println("Par formado por {"+x1.getNome()+", "+x2.getNome()+"} existe!\nAdicionar depedência!");
+				//	Teste da estrutura paresDependentes pré inserção
+				paresD.get(i).paresDependentes.add(dependente);
+				//	Teste da estrutura paresDependentes pós inserção
+			} else {
+				System.out.println("ERRO: Este par {"+x1.getNome()+", "+x2.getNome()+"} não existe!\nVERIFICAR!\n");
+			}
+		}
+	}
+	
 	/**
 	 * Função que analisa a igualdade de transições entre os pares
 	 * @param paresT
@@ -97,7 +114,7 @@ public class Testes {
 					//	Se um for final e o outro não-final, o par não pode ser igual e o motivo é armazenado 
 					//	Verificação para as transições com 'a'
 					if (da1.estadoFinal != da2.estadoFinal) {
-						System.out.println("O Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] não é igual, pois uma das transições em 'a' vai para final e ou outro para não final!");
+						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] não é igual, pois uma das transições em 'a' vai para final e ou outro para não final!");
 						//String aux = parT.getMotivo();
 						//System.out.println("Motivo [antes]: "+parT.getMotivo());
 						parT.setMotivo("a {"+da1.getNome()+","+da2.getNome()+"}");
@@ -105,20 +122,21 @@ public class Testes {
 						parT.setParFinal(false);
 						
 					} else {
-						System.out.println("O Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] é igual em 'a'!");
+						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] é igual em 'a'!");
 						//	Como eles são aparentemente iguais, eles são armazenados nos pares dependentes do par analisado
-						//	... FAZER
+						//	Função que armazena o par na dependência de Par(da1,da2):
+						//addParDependente(da1,da2,parT);
 					}
 					//	Verificação para as transições com 'b'
 					if (db1.estadoFinal != db2.estadoFinal) {
-						System.out.println("O Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] não é igual, pois uma das transições em 'b' vai para final e ou outro para não final!");
+						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] não é igual, pois uma das transições em 'b' vai para final e ou outro para não final!");
 						//String aux = parT.getMotivo();
 						//System.out.println("Motivo [antes]: "+aux);
 						parT.setMotivo("a {"+db1.getNome()+","+db2.getNome()+"}");
 						System.out.println("Motivo: "+parT.getMotivo());
 						parT.setParFinal(false);
 					} else {
-						System.out.println("O Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] é igual em 'b'!");
+						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] é igual em 'b'!");
 						//	Como eles são aparentemente iguais, eles são armazenados nos pares dependentes do par analisado
 						//	... FAZER
 					}

@@ -7,59 +7,61 @@ public class Automato {
 	//	Lista de estados do automato.
 	private ArrayList<Estado> estados = new ArrayList<Estado>();;
 	//	Alfabeto do automato
-	private ArrayList<Character> alfabeto = new ArrayList<Character>();
+	private ArrayList<String> alfabeto = new ArrayList<String>();
 	//	Estado inicial do automato
 	private Estado estadoInicial;
 	// 	Estados finais do automato
 	private ArrayList<Estado> estadosFinais = new ArrayList<Estado>();
+	private ArrayList<Transicao> transicoes = new ArrayList<Transicao>();
 	
 	/**
-	 * Construtor da classe
-	 * 
-	 * @param estados lista de todos os estados do AFD
-	 * @param alfabeto lista contendo o algabeto do AFD
-	 * @param estadoInicial estado inicial do AFD
-	 * @param estadosFinais lista contendo os estados finais do AFD
+	 * Construtor do objeto tipo Automato
+	 * @param estados
+	 * @param alfabeto
+	 * @param estadoInicial
+	 * @param estadosFinais
+	 * @param transicoes
 	 */
-	public Automato(ArrayList<Estado> estados, ArrayList<Character> alfabeto, Estado estadoInicial,
-			ArrayList<Estado> estadosFinais) {
+	public Automato(ArrayList<Estado> estados, ArrayList<String> alfabeto, Estado estadoInicial,
+			ArrayList<Estado> estadosFinais, ArrayList<Transicao> transicoes) {
 		super();
 		this.estados = estados;
 		this.alfabeto = alfabeto;
 		this.estadoInicial = estadoInicial;
 		this.estadosFinais = estadosFinais;
+		this.transicoes = transicoes;
 	}
-	
+
+	//	Implementação dos Getters e Setters
 	public ArrayList<Estado> getEstados() {
 		return estados;
 	}
-
 	public void setEstados(ArrayList<Estado> estados) {
 		this.estados = estados;
 	}
-
-	public ArrayList<Character> getAlfabeto() {
+	public ArrayList<String> getAlfabeto() {
 		return alfabeto;
 	}
-
-	public void setAlfabeto(ArrayList<Character> alfabeto) {
+	public void setAlfabeto(ArrayList<String> alfabeto) {
 		this.alfabeto = alfabeto;
 	}
-
 	public Estado getEstadoInicial() {
 		return estadoInicial;
 	}
-
 	public void setEstadoInicial(Estado estadoInicial) {
 		this.estadoInicial = estadoInicial;
 	}
-
 	public ArrayList<Estado> getEstadosFinais() {
 		return estadosFinais;
 	}
-
 	public void setEstadosFinais(ArrayList<Estado> estadosFinais) {
 		this.estadosFinais = estadosFinais;
+	}
+	public ArrayList<Transicao> getTransicoes() {
+		return transicoes;
+	}
+	public void setTransicoes(ArrayList<Transicao> transicoes) {
+		this.transicoes = transicoes;
 	}
 
 	/**
@@ -69,30 +71,18 @@ public class Automato {
 	public void addEstado(Estado estado) {
 		this.estados.add(estado);
 	}
-		
+	
 	/**
-	 * Indica quais estados são finais.
-	 * @param estado lista de nomes dos estados finais.
+	 * Funcao que junta os estado passados em um unico estado e adiciona no AFD
+	 * Tambem exclui esses estados individuais do AFD
+	 * @param estados ArrayList com os estados que devem se juntar em um so
 	 */
-	/*public void setEstadoFinal(List<String> estados) {
-		for (Estado estado : this.estados) {
-			if (estados.contains(estado.getNome())) {
-				estados.
-			}
-		}
+	public void criarEstado(ArrayList<Estado> estados) {
+		
 	}
-		
-	/**
-	 * Indica qual o estado que será usado como inicial.
-	 * @param estado nome do estado inicial.
-	 */
-	/*public void setEstadoInicial(String estado) {
-		for (Estado e : this.estados) {
-			if (e.getNome().equals(estado)) {
-				this.estadoInicial = e;
-				this.estadoInicial.setInicial();
-				break;
-			}
-		}
+	
+	/*public void adicionaTransicao(char entrada, Estado estado) {
+		Transicao t = new Transicao(entrada, estado);
+		this.transicoes.add(t);
 	}*/
 }

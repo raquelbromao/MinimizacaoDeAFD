@@ -214,7 +214,7 @@ public class Minimizacao {
 						System.out.println("\tEstados q["+i+"] e q["+j+"] são diferentes, portanto formam par!");
 						//	Cria objeto Par
 						ArrayList<Par> auxDep = new ArrayList<Par>();
-						Par parAux = new Par(estadosT.get(i),estadosT.get(j),auxDep,true,null);
+						Par parAux = new Par(estadosT.get(i),estadosT.get(j),auxDep,true,0,null);
 						paresD.add(parAux);
 					// 	Estados iguais [q1,q1] não formam par
 					} else {
@@ -407,8 +407,10 @@ public class Minimizacao {
 			parN++;
 		}
 		
+		
 		imprimePares();
 		//minimizaAFD();
+		
 		
 		//	Limpa
 		paresD.clear();

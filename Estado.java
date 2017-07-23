@@ -17,11 +17,16 @@ public class Estado {
 	//	Estado final = TRUE
 	boolean estadoInicial;
 	boolean estadoFinal;	
-	//	String nome;
 	//	MapaDeTransições<CHAVE: VALOR DA TRANSIÇÃO, VALOR: ESTADO>
 	Map<Character,String> transicoes = new HashMap<Character,String>();
 
-	//	Construtor do objeto tipo Estado
+	/**
+	 * Construtor do objeto tipo Estado
+	 * @param nome
+	 * @param estadoFinal
+	 * @param estadoInicial
+	 * @param transicoes
+	 */
 	public Estado(String nome, boolean estadoFinal, boolean estadoInicial, Map<Character,String> transicoes) {
 		super();
 		this.nome = nome;
@@ -34,33 +39,33 @@ public class Estado {
 	public String getNome() {
 		return nome;
 	}
-
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	
+	}	
 	public boolean isEstadoFinal() {
 		return estadoFinal;
 	}
-
 	public void setEstadoFinal(boolean estadoFinal) {
 		this.estadoFinal = estadoFinal;
 	}
-
 	public boolean isEstadoInicial() {
 		return estadoInicial;
 	}
-
 	public void setEstadoInicial(boolean estadoInicial) {
 		this.estadoInicial = estadoInicial;
 	}
-
 	public Map<Character,String> getTransicoes() {
 		return transicoes;
 	}
-
 	public void setTransicoes(Map<Character,String> transicoes) {
 		this.transicoes = transicoes;
+	}	
+	
+	/**
+	 * Funcao que imprime o nome do estado e se é final e inicial
+	 */
+	public void imprimeEstado() {
+		System.out.println("Nome: "+nome+"\nInicial? "+estadoInicial+"\nFinal?"+estadoFinal);
 	}
 
 }

@@ -1,5 +1,6 @@
 package minimizacao;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class Teste {
 	static ArrayList<Character> alfabeto = new ArrayList<Character>();
 	//	Estrutura para armazenar todos os estados finais do AFD
 	static ArrayList<Estado> estadosFinais = new ArrayList<Estado>();
-	//	FIM VARIAVEIS GLOBAIS
+	//	FIM VARIAVEIS GLOBAIS	
 	
 	/**
 	 * Funcao que adiciona aos pares do AFD os pares que dependem deles para serem iguais
@@ -35,12 +36,15 @@ public class Teste {
 		//	Se existir adiciona o Par dependente a estrutura paresDependentes
 		for (int i = 0; i < paresD.size(); i++) {
 			//	Verifica existência do par formado por x1 e x2 -> Par(x1,x2) OU Par(x2,x1)
+			//System.out.println("["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]");
 			if ((paresD.get(i).par1.equals(e1) && paresD.get(i).par2.equals(e2)) || 
-				(paresD.get(i).par1.equals(e2) && paresD.get(i).par2.equals(e1))) {
-				System.out.println("Par formado por ["+e1.getNome()+", "+e2.getNome()+"] existe! Adicionar dependencia!");
+				(paresD.get(i).par1.equals(e2) && paresD.get(i).par2.equals(e1)))  {
+				//System.out.println("Par formado por ["+e1.getNome()+", "+e2.getNome()+"] existe! Adicionar dependencia!");
 				paresD.get(i).paresDependentes.add(dependente);
-			} else {
-				System.out.println("ERRO: Este par {"+e1.getNome()+", "+e2.getNome()+"} nao existe! VERIFICAR!");
+				//	Verifica se adicionou!
+				//for (int k = 0; k < paresD.get(i).getParesDependentes().size(); k++) {
+					//System.out.print("["+paresD.get(i).getParesDependentes().get(k).par1.getNome()+", "+paresD.get(i).getParesDependentes().get(k).par2.getNome()+"] ");
+				//}
 			}
 		}
 	}
@@ -57,6 +61,10 @@ public class Teste {
 		//	Verifica se o par não possui transicoes vazia
 		if (parT.par1.transicoes.isEmpty() || parT.par2.transicoes.isEmpty()) {
 			System.out.println("ERRO: Um dos estados tem o mapa de transicao nulo! VERIFICAR!");
+		} else if ((parT.par1.isEstadoFinal() == true) || (parT.par2.isEstadoFinal() == true)) {
+			parT.setMotivo("final/nao-final");
+			parT.setParFinal(false);
+			parT.setParFinal2(1);
 		} else {
 			// Verifica se o par tem transicoes completas
 			for (int i = 0; i < alfabeto.size(); i++) {
@@ -81,38 +89,42 @@ public class Teste {
 							d2 = estados.get(j);
 						}
 					}
-					System.out.println("Achou estado destino do Par1["+aux+"]: "+d1.getNome());
-					System.out.println("Achou estado destino do Par2["+aux+"]: "+d2.getNome());
+					//System.out.println("Achou estado destino do Par1["+aux+"]: "+d1.getNome());
+					//System.out.println("Achou estado destino do Par2["+aux+"]: "+d2.getNome());
 					//	Com o estados destinos salvos e hora de verificar se os dois estados destinos sao final/nao-final
 					//	Se um for final e o outro nao-final, o par nao pode ser igual e o motivo e armazenado 
 					if (d1.estadoFinal != d2.estadoFinal) {
-						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] nao e igual, pois uma das transicoes em "+aux+" vai para final/nao-final!");
+						//System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] nao e igual, pois uma das transicoes em "+aux+" vai para final/nao-final!");
 						//String aux = parT.getMotivo();
 						//System.out.println("Motivo [antes]: "+parT.getMotivo());
 						parT.setMotivo(aux+"["+aux1+","+aux2+"]");
-						System.out.println("Motivo: "+parT.getMotivo());
+						//System.out.println("Motivo: "+parT.getMotivo());
 						parT.setParFinal(false);
+						parT.setParFinal2(1);
+					} else if (aux1.equals(aux2)) {
+						//System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
 					} else {
-						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
+						//System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
 						//	Como eles são aparentemente iguais, eles são armazenados nos pares dependentes do par analisado
 						//	Função que armazena o par na dependência de Par(da1,da2):
-						//addParDependente(d1,d2,parT);
+						addParDependente(d1,d2,parT);
 					}
-					
 				//	Um dos estados do par não é completo, informa qual e em qual símbolo
 				} else if (parT.par1.transicoes.containsKey(alfabeto.get(i)) == false) {
-					System.out.println("ERRO: O estado "+parT.par1.getNome()+" nao tem transicao pro simbolo "+aux+"! VERIFICAR");
-					parT.setMotivo("nao-completo");
+					//System.out.println("ERRO: O estado "+parT.par1.getNome()+" nao tem transicao pro simbolo "+aux+"! VERIFICAR");
+					parT.setParFinal(false);
+					parT.setParFinal2(1);
+					//parT.setMotivo("nao-completo");
 					return;
 				} else {
-					System.out.println("ERRO: O estado "+parT.par2.getNome()+" nao tem transicao pro simbolo "+aux+"! VERIFICAR");
-					parT.setMotivo("nao-completo");
+					//System.out.println("ERRO: O estado "+parT.par2.getNome()+" nao tem transicao pro simbolo "+aux+"! VERIFICAR");
+					parT.setParFinal(false);
+					parT.setParFinal2(1);
+					//parT.setMotivo("nao-completo");
 					return;
 				}
-			}
-			
+			}	
 		}
-		
 	}
 	
 	/**
@@ -130,7 +142,7 @@ public class Teste {
 					if (estadosT.get(i).nome.equals(estadosT.get(j).nome) == false) {
 						//	Cria objeto Par
 						ArrayList<Par> auxDep = new ArrayList<Par>();
-						Par parAux = new Par(estadosT.get(i),estadosT.get(j),auxDep,true,null);
+						Par parAux = new Par(estadosT.get(i),estadosT.get(j),auxDep,true,0,"");
 						paresD.add(parAux);
 					// 	Estados iguais [q1,q1] nao formam par
 					} else {
@@ -180,6 +192,65 @@ public class Teste {
 	public static void imprimeTransicoes(Estado estado){
 		System.out.println(estado.getTransicoes().toString());
 	}
+
+	/**
+	 * Funcao que imprime todos os pares do AFD, incluindo se sao iguais ou nao e seus pares dependentes!
+	 */
+	private static void imprimePares() {
+		for (int i = 0; i < paresD.size(); i++) {
+			System.out.println("\nPAR["+i+"] = ["+paresD.get(i).par1.getNome()+", "+paresD.get(i).par2.getNome()+"]");
+			System.out.println("É igual?: "+paresD.get(i).parFinal+" | "+paresD.get(i).getParFinal2());
+			System.out.print("Pares Dependentes: ");
+			for (int j = 0; j < paresD.get(i).paresDependentes.size(); j++) {
+				System.out.print("["+paresD.get(i).paresDependentes.get(j).par1.getNome()+", "+paresD.get(i).paresDependentes.get(j).par2.getNome()+"] ");
+			}
+		}
+	}
+	
+	/**
+	 * Funcao que gera a tabela de minimizacao do AFD
+	 */
+	private static void geraTabela() {
+		//String arq = "tabela.txt";		
+		String texto = "INDICE   D[i,j] =           S[i,j] =           MOTIVO";
+		System.out.println(texto);
+		for (int i = 0; i < paresD.size(); i++) {
+			String aux = "["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]   "+
+					paresD.get(i).getParFinal2()+"            {[q0,q1],[q2,q1]}     "+
+					paresD.get(i).getMotivo();
+			System.out.println(aux);
+			//texto.concat());
+		}
+		//PrintWriter gravarArq = new PrintWriter(arq);
+		//gravarArq.printf("INDICE          D[i,j] =        S[i,j] =         MOTIVO");
+	}
+	
+	private static void minimizaAFD() {
+		//	Analisa cada par do AFD, se for igual, pares dependentes sao iguais
+		//	Senao for, pares dependentes nao sao iguais
+		for (int i = 0; i < paresD.size(); i++) {
+			//	Se par e igual, seus dependetes sao iguais
+			if (paresD.get(i).parFinal == true) {
+				for (int j = 0; j < paresD.get(i).paresDependentes.size(); j++) {
+					paresD.get(i).paresDependentes.get(j).setParFinal(true);
+					paresD.get(i).paresDependentes.get(j).setParFinal2(0);
+				}
+			//	Se o par nao e igual seus dependentes tb nao sao iguais	
+			//	Muda tb o motivo de nao ser igual de cada par dependente dele	
+			} else {
+				for (int j = 0; j < paresD.get(i).paresDependentes.size(); j++) {
+					paresD.get(i).paresDependentes.get(j).setParFinal(false);
+					paresD.get(i).paresDependentes.get(j).setParFinal2(1);
+					paresD.get(i).paresDependentes.get(j).setMotivo("prop["+paresD.get(i).paresDependentes.get(j).par1.nome
+							+","+paresD.get(i).paresDependentes.get(j).par2.nome+"]");
+				}
+			}
+		}
+		// Modifica o arquivo tabela.txt
+		geraTabela();
+		
+		//	Junta todos os pares iguais em um so estado
+	}
 	
 	public static void main(String[] args) {
 		// Insere estados no ArrayList estados
@@ -197,7 +268,7 @@ public class Teste {
 		estadosFinais.add(q3);
 
 		// Criar AFD
-		Automato AFD = new Automato(estados, alfabeto, q0, estadosFinais);
+		Automato AFD = new Automato(estados, alfabeto, q0, estadosFinais,null);
 
 		// Cria estrutura das transições para os estados
 		Map<Character, String> tranq0 = new HashMap<Character, String>();
@@ -230,14 +301,16 @@ public class Teste {
 
 		int parN = 1;
 		for (int i = 0; i < paresD.size(); i++) {
-			System.out.println("\nVerificação do Par ["+parN+"]");
-			System.out.print(paresD.get(i).par1.getNome()+" = ");
-			imprimeTransicoes(paresD.get(i).par1);
-			System.out.print(paresD.get(i).par2.getNome()+" = ");
-			imprimeTransicoes(paresD.get(i).par2);
+			//System.out.println("\nVerificação do Par["+parN+"]");
+			//System.out.print(paresD.get(i).par1.getNome()+" = ");
+			//imprimeTransicoes(paresD.get(i).par1);
+			//System.out.print(paresD.get(i).par2.getNome()+" = ");
+			//imprimeTransicoes(paresD.get(i).par2);
 			verificaPar(paresD.get(i), AFD.getAlfabeto());
 			parN++;
 		}
+		
+		//imprimePares();
+		minimizaAFD();
 	}
-
 }

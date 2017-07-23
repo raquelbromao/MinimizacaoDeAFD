@@ -8,18 +8,21 @@ public class Par {
 	Estado par2;
 	//	Array com a lista de pares que dependem deste par para serem iguais
 	ArrayList<Par> paresDependentes = new ArrayList<Par>();
-	//	Indica se o par é igual ou não: false -> NÃO É IGUAL; true -> É IGUAL
+	//	Indica se o par e igual ou nao: false -> NAO E IGUAL; true -> E IGUAL
 	boolean parFinal;
-	//	Indica o motivo do par não ser igual
+	//	Indica se o par e igual ou nao: 1 -> NAO E IGUAL  0 -> E IGUAL
+	Integer parFinal2;
+	//	Indica o motivo do par nao ser igual
 	String motivo;
 	
 	//	Construtor do objeto tipo Par
-	public Par(Estado par1, Estado par2, ArrayList<Par> paresDependentes, boolean parFinal, String motivo) {
+	public Par(Estado par1, Estado par2, ArrayList<Par> paresDependentes, boolean parFinal,Integer parFinal2, String motivo) {
 		super();
 		this.par1 = par1;
 		this.par2 = par2;
 		this.paresDependentes = paresDependentes;
 		this.parFinal = parFinal;
+		this.parFinal2 = parFinal2;
 		this.motivo = motivo;
 	}
 	
@@ -47,6 +50,14 @@ public class Par {
 	}
 	public void setParFinal(boolean parFinal) {
 		this.parFinal = parFinal;
+	}
+
+	public Integer getParFinal2() {
+		return parFinal2;
+	}
+
+	public void setParFinal2(Integer parFinal2) {
+		this.parFinal2 = parFinal2;
 	}
 
 	public String getMotivo() {

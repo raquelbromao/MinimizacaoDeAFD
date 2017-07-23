@@ -12,7 +12,6 @@ public class Automato {
 	private Estado estadoInicial;
 	// 	Estados finais do automato
 	private ArrayList<Estado> estadosFinais = new ArrayList<Estado>();
-	private ArrayList<Transicao> transicoes = new ArrayList<Transicao>();
 	
 	/**
 	 * Construtor do objeto tipo Automato
@@ -23,13 +22,12 @@ public class Automato {
 	 * @param transicoes
 	 */
 	public Automato(ArrayList<Estado> estados, ArrayList<String> alfabeto, Estado estadoInicial,
-			ArrayList<Estado> estadosFinais, ArrayList<Transicao> transicoes) {
+			ArrayList<Estado> estadosFinais) {
 		super();
 		this.estados = estados;
 		this.alfabeto = alfabeto;
 		this.estadoInicial = estadoInicial;
 		this.estadosFinais = estadosFinais;
-		this.transicoes = transicoes;
 	}
 
 	//	Implementação dos Getters e Setters
@@ -56,12 +54,6 @@ public class Automato {
 	}
 	public void setEstadosFinais(ArrayList<Estado> estadosFinais) {
 		this.estadosFinais = estadosFinais;
-	}
-	public ArrayList<Transicao> getTransicoes() {
-		return transicoes;
-	}
-	public void setTransicoes(ArrayList<Transicao> transicoes) {
-		this.transicoes = transicoes;
 	}
 
 	/**

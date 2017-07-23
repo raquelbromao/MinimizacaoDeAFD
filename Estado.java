@@ -18,7 +18,8 @@ public class Estado {
 	boolean estadoInicial;
 	boolean estadoFinal;	
 	//	MapaDeTransições<CHAVE: VALOR DA TRANSIÇÃO, VALOR: ESTADO>
-	Map<Character,String> transicoes = new HashMap<Character,String>();
+	//Map<Character,String> transicoes = new HashMap<Character,String>();
+	Map<String,String> transicoes = new HashMap<String,String>();
 
 	/**
 	 * Construtor do objeto tipo Estado
@@ -27,12 +28,13 @@ public class Estado {
 	 * @param estadoInicial
 	 * @param transicoes
 	 */
-	public Estado(String nome, boolean estadoFinal, boolean estadoInicial, Map<Character,String> transicoes) {
+	public Estado(String nome, boolean estadoFinal, boolean estadoInicial) {
 		super();
 		this.nome = nome;
 		this.estadoFinal = estadoFinal;
 		this.estadoInicial = estadoInicial;
-		this.transicoes = transicoes;
+		Map<String,String> aux = new HashMap<String,String>();
+		this.transicoes = aux; 
 	}
 	
 	//	Implementação dos Getters e Setters
@@ -54,10 +56,10 @@ public class Estado {
 	public void setEstadoInicial(boolean estadoInicial) {
 		this.estadoInicial = estadoInicial;
 	}
-	public Map<Character,String> getTransicoes() {
+	public Map<String,String> getTransicoes() {
 		return transicoes;
 	}
-	public void setTransicoes(Map<Character,String> transicoes) {
+	public void setTransicoes(Map<String,String> transicoes) {
 		this.transicoes = transicoes;
 	}	
 	
@@ -67,5 +69,4 @@ public class Estado {
 	public void imprimeEstado() {
 		System.out.println("Nome: "+nome+"\nInicial? "+estadoInicial+"\nFinal?"+estadoFinal);
 	}
-
 }

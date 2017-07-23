@@ -309,7 +309,7 @@ public class Minimizacao {
 		estadosFinais.add(q3);
 		
 		//	Criar AFD
-		Automato AFD = new Automato(estados, alfabeto, q0, estadosFinais);
+		//Automato AFD = new Automato(estados, alfabeto, q0, estadosFinais);
 		
 		//	Cria estrutura das transições para os estados
 		Map<Character,String> tranq0 = new HashMap<Character,String>();
@@ -340,10 +340,10 @@ public class Minimizacao {
 
 		
 		//	Insere o mapa de transições em seus respectivos estados
-		q0.setTransicoes(tranq0);
-		q1.setTransicoes(tranq1);
-		q2.setTransicoes(tranq2);
-		q3.setTransicoes(tranq3);	
+		//q0.setTransicoes(tranq0);
+		//q1.setTransicoes(tranq1);
+		//q2.setTransicoes(tranq2);
+		//q3.setTransicoes(tranq3);	
 		//q4.setTransicoes(tranq4);	
 		//q5.setTransicoes(tranq5);	
 		//q6.setTransicoes(tranq6);	
@@ -382,38 +382,38 @@ public class Minimizacao {
 		
 		//	Analisa o ArrayList estados e verifica quais estados são iguais ou não
 		//	Estados iguais formam pares para análise do algoritmo
-		criaPares(estados);
+		//criaPares(estados);
 		//	Dos pares criados anteriormente são excluídos os pares repetidos: ParN[x1,x2] e ParM[x2,x1] -> ParM será excluído
-		excluiParesRepetidos();
+		//excluiParesRepetidos();
 		
 		//	Testa criação de pares (D(i,j))
-		System.out.println("\nD(i,j)= ");
-		for (int i = 0; i < paresD.size(); i++) {
-			imprimePar(paresD.get(i));
-		}
+		//System.out.println("\nD(i,j)= ");
+		//for (int i = 0; i < paresD.size(); i++) {
+			//imprimePar(paresD.get(i));
+	//	}
 		
 		//	Com a tabela pronta é hora de verificar a igualdade de transições entre os estados pares
 		//	Percorre o array de pares e verifica as transições de cada um
-		int parN = 1;
+		//int parN = 1;
 		//System.out.println("\nVerificação da Igualdade de Transições entre os Pares do AFD");
-		for (int i = 0; i < paresD.size(); i++) {
+	//	for (int i = 0; i < paresD.size(); i++) {
 		//	System.out.println("\nVerificação do Par ["+parN+"]");
 			//System.out.print(paresD.get(i).par1.getNome()+" = ");
 			//imprimeTransicoes(paresD.get(i).par1);
 			//System.out.print(paresD.get(i).par2.getNome()+" = ");
 			//imprimeTransicoes(paresD.get(i).par2);
 			//	Chama função que analisa a igualdade de transições entre os pares
-			verificaPar(paresD.get(i), AFD.getAlfabeto());
-			parN++;
-		}
+			//verificaPar(paresD.get(i), AFD.getAlfabeto());
+			//parN++;
+		//}
 		
 		
-		imprimePares();
+		//imprimePares();
 		//minimizaAFD();
 		
 		
 		//	Limpa
-		paresD.clear();
-		estados.clear();
+		//paresD.clear();
+		//estados.clear();
 	}
 }

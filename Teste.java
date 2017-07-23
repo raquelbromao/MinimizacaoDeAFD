@@ -8,13 +8,13 @@ import java.util.Map;
 public class Teste {
 	//	INICIO VARIAVEIS GLOBAIS
 	//	Estado Inicial
-	static Estado q0 = new Estado("q0",false,true,null);
+	static Estado q0 = new Estado("q0",false,true);
 	//	Estados nem iniciais e nem finais
-	static Estado q1 = new Estado("q1",false,false,null);
-	static Estado q2 = new Estado("q2",false,false,null);
-	static Estado q4 = new Estado("q4",false,false,null);
+	static Estado q1 = new Estado("q1",false,false);
+	static Estado q2 = new Estado("q2",false,false);
+	static Estado q4 = new Estado("q4",false,false);
 	//	Estado Final
-	static Estado q3 = new Estado("q3",true,false,null);	
+	static Estado q3 = new Estado("q3",true,false);	
 	//	Estrutura para armazenar todos os estados do AFD
 	static ArrayList<Estado> estados = new ArrayList<Estado>();
 	// Estrutura para armazenar todos os pares (D(i,j)) da Tabela de minimizacao
@@ -55,8 +55,8 @@ public class Teste {
 	 * @param alfabeto estrutura que guarda todos os simbolos do alfabeto para analise
 	 */
 	static public void verificaPar(Par parT, ArrayList<Character> alfabeto) {
-		Estado d1 = new Estado(null, false, false, null);
-		Estado d2 = new Estado(null, false, false, null);
+		Estado d1 = new Estado(null, false, false);
+		Estado d2 = new Estado(null, false, false);
 		
 		//	Verifica se o par não possui transicoes vazia
 		if (parT.par1.transicoes.isEmpty() || parT.par2.transicoes.isEmpty()) {
@@ -268,7 +268,7 @@ public class Teste {
 		estadosFinais.add(q3);
 
 		// Criar AFD
-		Automato AFD = new Automato(estados, alfabeto, q0, estadosFinais,null);
+		//Automato AFD = new Automato(estados, alfabeto, q0, estadosFinais,null);
 
 		// Cria estrutura das transições para os estados
 		Map<Character, String> tranq0 = new HashMap<Character, String>();
@@ -290,27 +290,27 @@ public class Teste {
 		tranq4.put('b', "q1");
 
 		// Insere o mapa de transições em seus respectivos estados
-		q0.setTransicoes(tranq0);
-		q1.setTransicoes(tranq1);
-		q2.setTransicoes(tranq2);
-		q3.setTransicoes(tranq3);
-		q4.setTransicoes(tranq4);
+		//q0.setTransicoes(tranq0);
+		//q1.setTransicoes(tranq1);
+		//q2.setTransicoes(tranq2);
+		//q3.setTransicoes(tranq3);
+		//q4.setTransicoes(tranq4);
 
-		criaPares(estados);
-		excluiParesRepetidos();
+		//criaPares(estados);
+		//excluiParesRepetidos();
 
-		int parN = 1;
-		for (int i = 0; i < paresD.size(); i++) {
+		//int parN = 1;
+		//for (int i = 0; i < paresD.size(); i++) {
 			//System.out.println("\nVerificação do Par["+parN+"]");
 			//System.out.print(paresD.get(i).par1.getNome()+" = ");
 			//imprimeTransicoes(paresD.get(i).par1);
 			//System.out.print(paresD.get(i).par2.getNome()+" = ");
 			//imprimeTransicoes(paresD.get(i).par2);
-			verificaPar(paresD.get(i), AFD.getAlfabeto());
-			parN++;
-		}
+			//verificaPar(paresD.get(i), AFD.getAlfabeto());
+			//parN++;
+		//}
 		
 		//imprimePares();
-		minimizaAFD();
+		//minimizaAFD();
 	}
 }

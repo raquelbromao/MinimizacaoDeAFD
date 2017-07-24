@@ -42,6 +42,23 @@ public class Main {
 	}
 	
 	/**
+	 * Funcao que imprime todos os pares com seus respectivos S[i,j]
+	 */
+	public static String imprimeDependentes(Par parT) {
+			//System.out.println("PAR["+parT.par1.getNome()+","+parT.par2.getNome()+"]");
+			//System.out.println("\t- pares dependentes: ");
+			String aux = "";
+			for (int j = 0; j < parT.paresDependentes.size(); j++) {
+				//System.out.print("pd["+parT.paresDependentes.get(j).par1.getNome()+","
+										//+parT.paresDependentes.get(j).par2.getNome()+"]");
+				String aux2 = ("["+parT.paresDependentes.get(j).par1.getNome()+","
+						+parT.paresDependentes.get(j).par2.getNome()+"]");
+				aux.concat(aux2);
+			}
+			return aux;
+	}
+	
+	/**
 	 * Funcao que imprime as transições de cada estado do AFD
 	 * @param estado Objeto Estado a ser impresso
 	 */
@@ -211,31 +228,38 @@ public class Main {
 	 * @throws IOException 
 	 */
 	private static void geraTabela() throws IOException {	
-		String dependentes = "";
-		String texto = "INDICE   D[i,j] =           S[i,j] =           MOTIVO";
+		//String texto = "INDICE   D[i,j] =        S[i,j] =             MOTIVO";
 		System.out.println(texto);
 		for (int i = 0; i < paresD.size(); i++) {
+			String aux3 = "";
 			for (int j = 0; j < paresD.get(i).paresDependentes.size(); j++) {
-				String aux2 = ("["+paresD.get(i).paresDependentes.get(j).par1.getNome()+","+
-						paresD.get(i).paresDependentes.get(j).par2.getNome()+"]");
-				dependentes.concat(aux2);
+					aux3 = aux3 +"["+paresD.get(i).paresDependentes.get(j).par1.getNome()+","
+									+paresD.get(i).paresDependentes.get(j).par2.getNome()+"]";
 			}
-			String aux = "["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]   "+
-					paresD.get(i).getParFinal2()+"            {"+dependentes+"}     "+
-					paresD.get(i).getMotivo();
-			System.out.println(aux);
+			//System.out.println("["+paresD.get(i).par1.nome+","+paresD.get(i).par2.nome+"]   "+
+				//	paresD.get(i).getParFinal2()+"               {"+aux3+"}               "+
+				//	paresD.get(i).getMotivo());
 		}
 		
+		//System.out.println(aux3);
+		
+		//	Grava no arquivo
 		FileWriter arq = new FileWriter("tabela.txt");
 	    PrintWriter gravarArq = new PrintWriter(arq);
 	    
 	    gravarArq.printf("INDICE   D[i,j] =           S[i,j] =           MOTIVO %n");
 	    for (int i= 0; i < paresD.size(); i++) {
+	    	String aux3 = "";
+			for (int j = 0; j < paresD.get(i).paresDependentes.size(); j++) {
+				aux3 = aux3 +"["+paresD.get(i).paresDependentes.get(j).par1.getNome()+","
+						  		+paresD.get(i).paresDependentes.get(j).par2.getNome()+"]";
+			}
 	      gravarArq.printf("["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]   "+
-					paresD.get(i).getParFinal2()+"            {[q0,q1],[q2,q1]}     "+
+					paresD.get(i).getParFinal2()+"            {"+aux3+"}     "+
 					paresD.get(i).getMotivo()+"%n");
 	    }	 
 	    arq.close();
+	    //	Fim de gravação no arquivo
 	}
 	
 	/**
@@ -498,6 +522,7 @@ public class Main {
 		//imprimePares();	
 		minimizaAFD();
 		geraTabela();
+		//System.out.println("\n\n");
 		
 		FileWriter arq2 = new FileWriter("afd_minimizado.txt");
 	    PrintWriter gravarArq2 = new PrintWriter(arq2);

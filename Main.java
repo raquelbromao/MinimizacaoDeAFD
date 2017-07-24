@@ -33,15 +33,10 @@ public class Main {
 		//	Se existir adiciona o Par dependente a estrutura paresDependentes
 		for (int i = 0; i < paresD.size(); i++) {
 			//	Verifica existência do par formado por x1 e x2 -> Par(x1,x2) OU Par(x2,x1)
-			//System.out.println("["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]");
 			if ((paresD.get(i).par1.equals(e1) && paresD.get(i).par2.equals(e2)) || 
 				(paresD.get(i).par1.equals(e2) && paresD.get(i).par2.equals(e1)))  {
-				System.out.println("Par formado por ["+e1.getNome()+", "+e2.getNome()+"] existe! Adicionar dependencia!");
+				//System.out.println("Par formado por ["+e1.getNome()+", "+e2.getNome()+"] existe! Adicionar dependencia!");
 				paresD.get(i).paresDependentes.add(dependente);
-				//	Verifica se adicionou!
-				//for (int k = 0; k < paresD.get(i).getParesDependentes().size(); k++) {
-					//System.out.print("["+paresD.get(i).getParesDependentes().get(k).par1.getNome()+", "+paresD.get(i).getParesDependentes().get(k).par2.getNome()+"] ");
-				//}
 			}
 		}
 	}
@@ -139,18 +134,21 @@ public class Main {
 		//	Verifica se o par não possui transicoes vazia
 		if (parT.par1.transicoes.isEmpty() || parT.par2.transicoes.isEmpty()) {
 			System.out.println("ERRO: Um dos estados tem o mapa de transicao nulo! VERIFICAR!");
-		} else if ((parT.par1.isEstadoFinal() == true) || (parT.par2.isEstadoFinal() == true)) {
-			System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] nao e igual: final/nao-final!");
+			return;
+		//	Verifica se o par e formado por final/nao-final	
+		} else if (((parT.par1.isEstadoFinal() == true) && (parT.par2.isEstadoFinal() == false)) || ((parT.par2.isEstadoFinal() == true) && (parT.par1.isEstadoFinal() == false) )) {
+			//System.out.println("\nO par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] nao e igual: final/nao-final!");
 			parT.setMotivo("final/nao-final");
 			parT.setParFinal(false);
 			parT.setParFinal2(1);
+			return;
+		//	Se par e igual verifica transicoes de cada um	
 		} else {
 			// Verifica se o par tem transicoes completas
 			for (int i = 0; i < alfabeto.size(); i++) {
 				String aux = alfabeto.get(i);
-				if ((parT.par1.transicoes.containsKey(alfabeto.get(i))) == true && (parT.par2.transicoes.containsKey(alfabeto.get(i))) == true) {
+				if ((parT.getMotivo().equals("final/nao-final") == false)) {
 					//	Verificado que o par é não-nulo e completo se verifica se são iguais para todo o alfabeto
-					//System.out.println("TUDO CERTO ATE AQUI! YEY!");
 					//	Se tudo estiver ok, se inicia a verificacao da igualdade de transicoes para estados iguais
 					//	Verifica para transicoes de i (se &(qi,i) = &(qj,i), entao o par pode ser igual)
 					//	Armazena o nomes dos estados dos que cada estado do par faz uma transição com i
@@ -173,20 +171,22 @@ public class Main {
 					//	Com o estados destinos salvos e hora de verificar se os dois estados destinos sao final/nao-final
 					//	Se um for final e o outro nao-final, o par nao pode ser igual e o motivo e armazenado 
 					if (d1.estadoFinal != d2.estadoFinal) {
-						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] nao e igual, pois uma das transicoes em "+aux+" vai para final/nao-final!");
-						//String aux = parT.getMotivo();
-						System.out.println("Motivo [antes]: "+parT.getMotivo());
+						//System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] nao e igual, em '"+aux+"' vai para final/nao-final!");
+						//System.out.println("Motivo [antes]: "+parT.getMotivo());
 						parT.setMotivo(aux+"["+aux1+","+aux2+"]");
-						System.out.println("Motivo: "+parT.getMotivo());
+						//System.out.println("Motivo: "+parT.getMotivo());
 						parT.setParFinal(false);
 						parT.setParFinal2(1);
-					} else if (aux1.equals(aux2)) {
-						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
-					} else {
-						System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
+						return;
+					} else //if ((parT.par1.equals(d1) && parT.par2.equals(d2)) || (parT.par1.equals(d2) && parT.par2.equals(d1))) {
+						//System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
+						//return;
+					 /*else*/ {
+						//System.out.println("\nO Par["+parT.par1.getNome()+", "+parT.par2.getNome()+"] e igual em "+aux+"!");
 						//	Como eles são aparentemente iguais, eles são armazenados nos pares dependentes do par analisado
 						//	Função que armazena o par na dependência de Par(da1,da2):
 						addParDependente(d1,d2,parT);
+						return;
 					}
 				//	Um dos estados do par não é completo, informa qual e em qual símbolo
 				} else if (parT.par1.transicoes.containsKey(alfabeto.get(i)) == false) {
@@ -208,20 +208,34 @@ public class Main {
 	
 	/**
 	 * Funcao que gera a tabela de minimizacao do AFD
+	 * @throws IOException 
 	 */
-	private static void geraTabela() {
-		//String arq = "tabela.txt";		
+	private static void geraTabela() throws IOException {	
+		String dependentes = "";
 		String texto = "INDICE   D[i,j] =           S[i,j] =           MOTIVO";
 		System.out.println(texto);
 		for (int i = 0; i < paresD.size(); i++) {
+			for (int j = 0; j < paresD.get(i).paresDependentes.size(); j++) {
+				String aux2 = ("["+paresD.get(i).paresDependentes.get(j).par1.getNome()+","+
+						paresD.get(i).paresDependentes.get(j).par2.getNome()+"]");
+				dependentes.concat(aux2);
+			}
 			String aux = "["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]   "+
-					paresD.get(i).getParFinal2()+"            {[q0,q1],[q2,q1]}     "+
+					paresD.get(i).getParFinal2()+"            {"+dependentes+"}     "+
 					paresD.get(i).getMotivo();
 			System.out.println(aux);
-			//texto.concat());
 		}
-		//PrintWriter gravarArq = new PrintWriter(arq);
-		//gravarArq.printf("INDICE          D[i,j] =        S[i,j] =         MOTIVO");
+		
+		FileWriter arq = new FileWriter("tabela.txt");
+	    PrintWriter gravarArq = new PrintWriter(arq);
+	    
+	    gravarArq.printf("INDICE   D[i,j] =           S[i,j] =           MOTIVO %n");
+	    for (int i= 0; i < paresD.size(); i++) {
+	      gravarArq.printf("["+paresD.get(i).par1.nome+", "+paresD.get(i).par2.nome+"]   "+
+					paresD.get(i).getParFinal2()+"            {[q0,q1],[q2,q1]}     "+
+					paresD.get(i).getMotivo()+"%n");
+	    }	 
+	    arq.close();
 	}
 	
 	/**
@@ -249,9 +263,19 @@ public class Main {
 			}
 		}
 		// Modifica o arquivo tabela.txt
-		geraTabela();
+		//geraTabela();
 		
 		//	Junta todos os pares iguais em um so estado
+	}
+	
+	public static void limpaTudo() {
+		definicao.clear();		transicoes.clear();
+		estados = null;		alfabeto = null;
+		estInicial = null;		estFinais = null;
+		transicoesT.clear();		estadosT.clear();
+		alfabetoAFD.clear(); estFinaisT.clear();
+		estFinaisAFD.clear(); estadosAFD.clear();
+		estInicialAFD = null; paresD.clear();
 	}
 	
 	//	INICIO - FUNCOES QUE INTERAGEM COM O ARQUIVO E CRIAM AS ESTRUTURAS PRO AFD
@@ -452,24 +476,34 @@ public class Main {
 		
 		//	Arruma toda a string recebida do arquivo 
 		limpaDefinicao(definicao);
+		
 		//	Cria o AFD para minimizar
 		Automato AFD = new Automato(estadosAFD, alfabetoAFD, estInicialAFD, estFinaisAFD);
+		
 		//	Minimiza
 		criaPares(estadosAFD);
 		excluiParesRepetidos();
-		int parN = 1;
 		
+		int parN = 1;
 		for (int i = 0; i < paresD.size(); i++) {
-			System.out.println("\nVerificação do Par["+parN+"]");
-			System.out.print(paresD.get(i).par1.getNome()+" = ");
-			imprimeTransicoes(paresD.get(i).par1);
-			System.out.print(paresD.get(i).par2.getNome()+" = ");
-			imprimeTransicoes(paresD.get(i).par2);
+			//System.out.println("\nVerificação do Par["+parN+"]");
+			//System.out.print(paresD.get(i).par1.getNome()+" = ");
+			//imprimeTransicoes(paresD.get(i).par1);
+			//System.out.print(paresD.get(i).par2.getNome()+" = ");
+			//imprimeTransicoes(paresD.get(i).par2);
 			verificaPar(paresD.get(i), AFD.getAlfabeto());
 			parN++;
 		}
 		
-		imprimePares();	
+		//imprimePares();	
 		minimizaAFD();
+		geraTabela();
+		
+		FileWriter arq2 = new FileWriter("afd_minimizado.txt");
+	    PrintWriter gravarArq2 = new PrintWriter(arq2);
+	    arq2.close();
+	    
+	    //	Zera todas as estruturas globais
+	    limpaTudo();
 	}
 }

@@ -63,18 +63,4 @@ public class Automato {
 	public void addEstado(Estado estado) {
 		this.estados.add(estado);
 	}
-	
-	/**
-	 * Funcao que junta os estado passados em um unico estado e adiciona no AFD
-	 * Tambem exclui esses estados individuais do AFD
-	 * @param estados ArrayList com os estados que devem se juntar em um so
-	 */
-	public void criarEstado(ArrayList<Estado> estados) {
-		
-	}
-	
-	/*public void adicionaTransicao(char entrada, Estado estado) {
-		Transicao t = new Transicao(entrada, estado);
-		this.transicoes.add(t);
-	}*/
 }
